@@ -37,44 +37,6 @@ $(function() {
 				enable();
 			});
 		});
-		/*
-		master = false;
-		if (master) {
-			player = 'X';
-			opponent = 'O';
-			key = "master";
-		} else {
-			player = 'O';
-			opponent = 'X';
-			key = "slave";
-		}
-		if (master) {
-			peer.on("connection", function(conn) {
-				alert("Slave has connected");
-				conn.on("error", function(err) {
-					alert("Error ocurred, check console!");
-					console.log(err);
-				});
-				connection = conn;
-				render();
-				disable();
-				connection.on("data", handler);
-			})
-		} else {
-			peer.on("open", function() {
-				connection = peer.connect("master");
-				connection.on("error", function(err) {
-					alert("Error ocurred, check console!");
-					console.log(err);
-				});
-				connection.on("data", handler);
-				connection.on("open", function() {
-					alert("You are connected");
-					render();
-					enable();
-				});
-			});
-		}*/
 	}
 
 	var handler = function(data) {
@@ -97,20 +59,21 @@ $(function() {
 
 	var enable = function() {
 		$("#board").on("click", "td", function(ev) {
-			console.log("Clicked");
 			var target = $(ev.target)
 			var row = target.parent().data("row");
 			var col = target.data("col");
-			model[row][col] = player;
-			render();
-			connection.send({
-				row: row,
-				col: col
-			});
-			if (won(model, player)) {
-				alert("You won!");
+			if (model[row][col] == "") {
+				model[row][col] = player;
+				render();
+				connection.send({
+					row: row,
+					col: col
+				});
+				if (won(model, player)) {
+					alert("You won!");
+				}
+				disable();
 			}
-			disable();
 		});
 	}
 
