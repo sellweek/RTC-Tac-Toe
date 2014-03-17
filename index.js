@@ -5,7 +5,7 @@ $(function() {
 	var connection;
 
 	var init = function() {
-		var peer = new Peer({key: "9e8yliywalymbo6r", debug: 3, config: {'iceServers': [{ url: 'stun:stun01.sipphone.com' }]}});
+		var peer = new Peer({key: "9e8yliywalymbo6r", debug: 3, config: {'iceServers': [{ url: 'stun:stun.ekiga.net' }]}});
 		peer.on("open", function() {
 			$("#my-id").val(peer.id);
 		});
