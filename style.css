@@ -1,3 +1,7 @@
+table {
+	margin: 0 auto;
+}
+
 tbody, th, td {
 	border: 1px solid black;
 }
@@ -5,7 +9,6 @@ tbody, th, td {
 td {
 	text-align: center;
 	vertical-align: middle;
-	font-family: sans-serif;
 	font-size: 20px;
 	width: 30px;
 	height: 30px;
@@ -13,6 +16,14 @@ td {
 
 #status {
 	display: none;
+	text-align: center;
+}
+
+#my-id {
+	text-align: center;
+	font-weight: bold;
+	font-size: 1.3em;
+	/*letter-spacing: 3px;*/
 }
 
 .X {
@@ -21,4 +32,25 @@ td {
 
 .O {
 	color: blue;
+}
+
+body {
+	background-color: #00B74A;
+	font-family: sans-serif;
+}
+
+#container {
+	text-align: center;
+	border-radius: 10px;
+	background-color: #FF6440;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -105px 0 0 -105px;
+	padding: 5px;
+	width: 210px;
+	height: 210px;
+	border-width: 1px;
+	border-color: black;
+	border-style: solid;
 }

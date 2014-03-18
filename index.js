@@ -4,44 +4,47 @@ $(function() {
 	var player, opponent;
 	var connection;
 
+	var model = [
+		['', '', ''],
+		['', '', ''],
+		['', '', '']
+	];
+
 	var init = function() {
 		var peer = new Peer({key: "9e8yliywalymbo6r", debug: 3, config: {'iceServers': [{ url: 'stun:stun.ekiga.net' }]}});
 		peer.on("open", function() {
-			$("#my-id").val(peer.id);
+			$("#my-id").text(peer.id);
 		});
 		peer.on("connection", function(conn) {
 			connection = conn;
 			$("#id-block").remove();
-			connection.on("error", function(err) {
-				alert("Error ocurred, check console!");
-				console.log(err);
-			});
-			connection.on("data", handler);
+			$("#status").show();
+			connection.on("error", errHandler);
+			connection.on("close", disconnectHandler);
+			connection.on("data", dataHandler);
 			player = "O";
 			opponent = "X";
 			render();
-			$("#status").show();
 			disable();
 		});
 		$("#connect").on("click", function() {
 			connection = peer.connect($("#foreign-id").val(), {serialization: "json"});
 			$("#id-block").remove();
-			connection.on("error", function(err) {
-				alert("Error ocurred, check console!");
-				console.log(err);
-			});
-			connection.on("data", handler);
+			$("#status").show();
+			$("#status").text("Connecting to your opponent.");
+			connection.on("error", errHandler);
+			connection.on("data", dataHandler);
 			connection.on("open", function() {
 				player = "X";
 				opponent = "O";
 				render();
-				$("#status").show();
 				enable();
 			});
+			connection.on("close", disconnectHandler);
 		});
 	}
 
-	var handler = function(data) {
+	var dataHandler = function(data) {
 		model[data.row][data.col] = opponent;
 		render();
 		if (won(model, opponent)) {
@@ -51,11 +54,15 @@ $(function() {
 		enable();
 	}
 
-	var model = [
-		['', '', ''],
-		['', '', ''],
-		['', '', '']
-	];
+	var disconnectHandler = function() {
+		disable();
+		$("#status").text("Your opponent has left.")
+	}
+
+	var errHandler = function(err) {
+		alert("Error ocurred, check console!");
+		console.log(err);
+	}
 
 	var enable = function() {
 		$("#status").text("It's your turn.");
