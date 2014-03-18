@@ -10,48 +10,38 @@
 	</head>
 	<body>
 		<div id="id-block">
-			Your ID:<input type="text" id="my-id"><br>
+			Your ID:<input type="text" id="my-id" disabled><br>
 			Connect to: <input type="text" id="foreign-id"><br>
-			<input type="submit" id="connect">
+			<input type="submit" id="connect" value="Connect">
 		</div>
 		<div id="board">
+
+		</div>
+		<div id="status">
 
 		</div>
 		<script type="text/template" id="board-template">
 			<table>
 				<tr data-row="0">
-					<td data-col="0">
-						<%= positions[0][0] %>
-					</td>
-					<td data-col="1">
-						<%= positions[0][1] %>
-					</td>
-					<td data-col="2">
-						<%= positions[0][2] %>
-					</td>
+					<%= square({positions: positions, row: 0, col: 0}) %>
+					<%= square({positions: positions, row: 0, col: 1}) %>
+					<%= square({positions: positions, row: 0, col: 2}) %>
 				</tr>
 				<tr data-row="1">
-					<td data-col="0">
-						<%= positions[1][0] %>
-					</td>
-					<td data-col="1">
-						<%= positions[1][1] %>
-					</td>
-					<td data-col="2">
-						<%= positions[1][2] %>
-					</td>
+					<%= square({positions: positions, row: 1, col: 0}) %>
+					<%= square({positions: positions, row: 1, col: 1}) %>
+					<%= square({positions: positions, row: 1, col: 2}) %>
 				</tr><tr data-row="2">
-					<td data-col="0">
-						<%= positions[2][0] %>
-					</td>
-					<td data-col="1">
-						<%= positions[2][1] %>
-					</td>
-					<td data-col="2">
-						<%= positions[2][2] %>
-					</td>
+					<%= square({positions: positions, row: 2, col: 0}) %>
+					<%= square({positions: positions, row: 2, col: 1}) %>
+					<%= square({positions: positions, row: 2, col: 2}) %>
 				</tr>
 			</table>
+		</script>
+		<script type="text/template" id="square-template">
+			<td data-col="<%= col %>" class="<%= positions[row][col] %>">
+				<%= positions[row][col] %>
+			</td>
 		</script>
 	</body>
 </html>

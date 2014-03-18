@@ -20,6 +20,7 @@ $(function() {
 			player = "O";
 			opponent = "X";
 			render();
+			$("#status").show();
 			disable();
 		});
 		$("#connect").on("click", function() {
@@ -34,6 +35,7 @@ $(function() {
 				player = "X";
 				opponent = "O";
 				render();
+				$("#status").show();
 				enable();
 			});
 		});
@@ -43,7 +45,7 @@ $(function() {
 		model[data.row][data.col] = opponent;
 		render();
 		if (won(model, opponent)) {
-			alert("Your opponent has won!");
+			$("#status").text("Your opponent has won!");
 			return;
 		}
 		enable();
@@ -55,9 +57,8 @@ $(function() {
 		['', '', '']
 	];
 
-	var board = _.template($("#board-template").html());
-
 	var enable = function() {
+		$("#status").text("It's your turn.");
 		$("#board").on("click", "td", function(ev) {
 			var target = $(ev.target)
 			var row = target.parent().data("row");
@@ -69,20 +70,24 @@ $(function() {
 					row: row,
 					col: col
 				});
-				if (won(model, player)) {
-					alert("You won!");
-				}
 				disable();
+				if (won(model, player)) {
+					$("#status").text("You have won!");
+				}
 			}
 		});
 	}
 
 	var disable = function() {
+		$("#status").text("It's your opponent's turn.");
 		$("#board").off("click", "td");
 	}
 
+	var board = _.template($("#board-template").html());
+	var square = _.template($("#square-template").html());
+
 	var render = function() {
-		$("#board").html(board({positions: model}));
+		$("#board").html(board({positions: model, square: square}));
 	}
 
 	var won = function(board, player) {

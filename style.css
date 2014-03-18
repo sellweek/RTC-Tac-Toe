@@ -10,3 +10,15 @@ td {
 	width: 30px;
 	height: 30px;
 }
+
+#status {
+	display: none;
+}
+
+.X {
+	color: red;
+}
+
+.O {
+	color: blue;
+}
