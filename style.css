@@ -35,14 +35,14 @@ td {
 }
 
 body {
-	background-color: #00B74A;
+	background-color: #009999;
 	font-family: sans-serif;
 }
 
 #container {
 	text-align: center;
 	border-radius: 10px;
-	background-color: #FF6440;
+	background-color: #FF9640;
 	position: absolute;
 	top: 50%;
 	left: 50%;
