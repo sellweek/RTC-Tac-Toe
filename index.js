@@ -14,6 +14,7 @@ $(function() {
 		var peer = new Peer({key: "9e8yliywalymbo6r", debug: 3, config: {'iceServers': [{ url: 'stun:stun.ekiga.net' }]}});
 		peer.on("open", function() {
 			$("#my-id").text(peer.id);
+			$("input:disabled").removeAttr("disabled");
 		});
 		peer.on("connection", function(conn) {
 			connection = conn;

@@ -46,10 +46,10 @@ body {
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	margin: -105px 0 0 -105px;
+	margin: -75px 0 0 -105px;
 	padding: 5px;
 	width: 210px;
-	height: 210px;
+	height: 150px;
 	border-width: 1px;
 	border-color: black;
 	border-style: solid;
