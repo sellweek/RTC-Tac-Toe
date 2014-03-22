@@ -11,7 +11,7 @@ $(function() {
 	];
 
 	var init = function() {
-		var peer = new Peer({key: "9e8yliywalymbo6r", debug: 3, config: {'iceServers': [{ url: 'stun:stun.ekiga.net' }]}});
+		var peer = new Peer({key: "9e8yliywalymbo6r", config: {'iceServers': [{ url: 'stun:stun.ekiga.net' }]}});
 		peer.on("open", function() {
 			$("#my-id").text(peer.id);
 			$("input:disabled").removeAttr("disabled");
@@ -19,10 +19,11 @@ $(function() {
 		peer.on("connection", function(conn) {
 			connection = conn;
 			$("#id-block").remove();
-			$("#status").show();
+			$("#status-row").css("display", "table");
 			connection.on("error", errHandler);
 			connection.on("close", disconnectHandler);
 			connection.on("data", dataHandler);
+			$("#reset").on("click", resetHandler);
 			player = "O";
 			opponent = "X";
 			render();
@@ -31,28 +32,58 @@ $(function() {
 		$("#connect").on("click", function() {
 			connection = peer.connect($("#foreign-id").val(), {serialization: "json"});
 			$("#id-block").remove();
-			$("#status").show();
-			$("#status").text("Connecting to your opponent.");
+			$("#status-row").css("display", "table");
+			$("#reset").hide();
+			$("#status").text("Connecting to opponent.");
 			connection.on("error", errHandler);
 			connection.on("data", dataHandler);
 			connection.on("open", function() {
+				$("#reset").show();
 				player = "X";
 				opponent = "O";
 				render();
 				enable();
 			});
 			connection.on("close", disconnectHandler);
+			$("#reset").on("click", resetHandler);
 		});
 	}
 
 	var dataHandler = function(data) {
-		model[data.row][data.col] = opponent;
-		render();
-		if (won(model, opponent)) {
-			$("#status").text("Your opponent has won!");
-			return;
+		$("#reset").off("click");
+		$("#reset").on("click", resetHandler);
+		if (data.row == -1 && data.col == -1) {
+			var approved = confirm("Your opponent wants to reset the game. Do you?");
+			if (approved) {
+				model = [
+					['', '', ''],
+					['', '', ''],
+					['', '', '']
+				];
+				connection.send({
+					row: -2,
+					col: -2
+				});
+				render();
+				disable();
+			}
+		} else if (data.row == -2 && data.col == -2) {
+			model = [
+					['', '', ''],
+					['', '', ''],
+					['', '', '']
+				];
+				render();
+				enable();
+		} else {
+			model[data.row][data.col] = opponent;
+			render();
+			if (won(model, opponent)) {
+				$("#status").text("Your opponent has won!");
+				return;
+			}
+			enable();
 		}
-		enable();
 	}
 
 	var disconnectHandler = function() {
@@ -63,6 +94,17 @@ $(function() {
 	var errHandler = function(err) {
 		alert("Error ocurred, check console!");
 		console.log(err);
+	}
+
+	var resetHandler = function() {
+		console.log("Called");
+		connection.send({
+			row: -1,
+			col: -1
+		});
+		disable();
+		$("status").text("Waiting for opponent approval.");
+		$("#reset").off("click");
 	}
 
 	var enable = function() {

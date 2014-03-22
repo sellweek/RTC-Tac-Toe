@@ -14,9 +14,22 @@ td {
 	height: 30px;
 }
 
-#status {
+#status-row {
 	display: none;
 	text-align: center;
+}
+
+#status {
+	display: table-cell;
+	width: 100%;
+	vertical-align: middle;
+}
+
+#reset {
+	display: inline;
+	width: 32px;
+	height: 32px;
+	vertical-align: middle;
 }
 
 #my-id {
