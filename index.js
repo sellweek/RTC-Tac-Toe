@@ -97,7 +97,6 @@ $(function() {
 	}
 
 	var resetHandler = function() {
-		console.log("Called");
 		connection.send({
 			row: -1,
 			col: -1
